@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="CheckStyle-IDEA">
+    <option name="configuration">
+      <map>
+        <entry key="active-configuration" value="LOCAL_FILE:C:/android-sdk/recovery/MIT_Java_CheckStyle.xml:MITDefault" />
+        <entry key="check-nonjava-files" value="false" />
+        <entry key="check-test-classes" value="false" />
+        <entry key="location-0" value="CLASSPATH:/sun_checks.xml:The default CheckStyle rules" />
+        <entry key="location-1" value="LOCAL_FILE:C:/android-sdk/recovery/MIT_Java_CheckStyle.xml:MITDefault" />
+        <entry key="suppress-errors" value="false" />
+        <entry key="thirdparty-classpath" value="" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
