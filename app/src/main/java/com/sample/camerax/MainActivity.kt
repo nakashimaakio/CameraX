@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -20,8 +19,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.sample.camerax.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,20 +31,15 @@ class MainActivity : AppCompatActivity() {
 		)
 	}
 
-	private lateinit var binding: ActivityMainBinding
+	private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
 	private val imageCapture: ImageCapture by lazy {
 		ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build()
 	}
 
-	private lateinit var cameraExecutor: ExecutorService
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
-
-		cameraExecutor = Executors.newSingleThreadExecutor()
 
 		if (allPermissionsGranted()) {
 			startCamera()
@@ -58,11 +50,6 @@ class MainActivity : AppCompatActivity() {
 		binding.shutterButton.setOnClickListener {
 			takePicture()
 		}
-	}
-
-	override fun onDestroy() {
-		super.onDestroy()
-		cameraExecutor.shutdown()
 	}
 
 	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -98,34 +85,19 @@ class MainActivity : AppCompatActivity() {
 		contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".jpg")
 		contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
 
-		val outputFileOptions = ImageCapture.OutputFileOptions.Builder(
-			contentResolver,
-			MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-			contentValues
-		).build()
+		val outputFileOptions = ImageCapture.OutputFileOptions.Builder(contentResolver, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues).build()
 
 		imageCapture.takePicture(
 			outputFileOptions,
 			ContextCompat.getMainExecutor(this),
 			object : ImageCapture.OnImageSavedCallback {
-				override fun onError(error: ImageCaptureException) {
-					setToast("error")
+				override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+					Toast.makeText(this@MainActivity, "success", Toast.LENGTH_LONG).show()
 				}
 
-				override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-					setToast("success")
+				override fun onError(error: ImageCaptureException) {
+					Toast.makeText(this@MainActivity, "error", Toast.LENGTH_LONG).show()
 				}
 			})
-	}
-
-	/**
-	 *  トースト作成
-	 *
-	 *  @param sentence テキスト
-	 */
-	private fun setToast(sentence: String) {
-		val ts = Toast.makeText(this, sentence, Toast.LENGTH_LONG)
-		ts.setGravity(Gravity.BOTTOM, 0, 320)
-		ts.show()
 	}
 }
