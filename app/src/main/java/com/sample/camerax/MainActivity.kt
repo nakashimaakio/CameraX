@@ -3,7 +3,6 @@ package com.sample.camerax
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
@@ -24,11 +23,7 @@ class MainActivity : AppCompatActivity() {
 
 	companion object {
 		private const val REQUEST_CODE_PERMISSIONS = 10
-
-		private val REQUIRED_PERMISSIONS = arrayOf(
-			Manifest.permission.CAMERA,
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.WRITE_EXTERNAL_STORAGE
-		)
+		private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
 	}
 
 	private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
